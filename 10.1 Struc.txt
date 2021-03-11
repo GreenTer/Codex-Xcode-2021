@@ -1,0 +1,67 @@
+************************************        # Structures
+Для структуры - компьютер создаёт конструктор по умолчанию, инициализация как в классе - не нужна!
+Меняешь в одном месте, меняется в одном месте (у структуры наоборот!)
+-----------------
+
+struct Family {                             // значения 
+    var name: String                        // var - переменную можно будет менять, let - нельзя
+    var age: Int
+}
+
+let wife = Family(name: "Dasha", age: 29)   // let wife
+wife.name = "Dunia"                         // поменять не сможем! т.к. (let wife), чтобы меня (var wife)
+
+-----------------                           # разбор памяти Struct!
+var wifeNew = wife                          // полностью скопирует wife
+wifeNew.name = "Dunia"                      // поменяется имя, чисто у wifeNew, а у wife, останется прежним
+
+-----------------                           # func в struc
+func addOneYear(student: inout FamilyStruct) {  // inout, нужен для того, чтобы работать с данными структуры!!
+    student.age += 1                            // inout делает из struc, как class, т.к. в struc - переменная let
+}
+
+addOneYear(student: &wifeStruct)            // & - нужен если в функции стоит inout
+
+
+************************************        # Пример: func + clouser in struc
+struct Student {
+    var name: String
+    var lastName: String
+    var birthday: Int
+    var mark: Double
+}
+
+let student1 = Student.init(name: "Sasha", lastName: "Borovitsky", birthday: 1991, mark: 5)
+let student2 = Student.init(name: "Dasha", lastName: "Borovitskaya", birthday: 1991, mark: 3)
+let student3 = Student.init(name: "Lev", lastName: "Borovitsky", birthday: 2016, mark: 4)
+
+let arrStudents = [student1, student2, student3]
+
+func gMeArr(arr: [Student]) {               // func in struc
+    
+    for (index, each) in arr.enumerated() {
+        
+        print("\(index+1). \(each.lastName) \(each.name) was born in \(each.birthday), mark: \(each.mark)\n")
+    }
+}
+
+gMeArr(arr: arrStudents)
+
+let arrSortStudent = arrStudents.sorted(by: {$0.mark > $1.mark})    // clouser in struc
+gMeArr(arr: arrSortStudent)
+
+let arrSortStudent2 = arrStudents.sorted(by: {                      // clouser in struc
+    if $0.lastName == $1.lastName {
+        return $0.name < $1.name
+    }
+
+    return $0.lastName < $1.lastName
+})
+
+gMeArr(arr: arrSortStudent2)
+
+var newArrStuden = arrStudents              // как менять данные в массиве
+newArrStuden[0].name = "Valera"
+newArrStuden[0].lastName = "Kylak"
+newArrStuden[0].birthday = 1991
+newArrStuden[0].mark = 4

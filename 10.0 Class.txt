@@ -1,0 +1,102 @@
+************************************        # Classses
+Классы - ссылочный тип, традиционно называют объектом.
+Когда новой переменной присваиваешь класс, 
+то знай - что поменяешь значение в одном месте - поменяется ВЕЗДЕ!
+Класс работает как ссылка! (в отличаи от структуры)!
+
+При создании параметра let wife = Family(name: "Dasha", age: 29) -> wife.name = "Dunia"
+можно менять!, при условии что в классе параметр (var name: String)
+
+При создании класса, после значений, должна быть инициализация(хоть пустая, но должна быть (в отличаи от структуры))
+
+-----------------                           # на примере, всё объяснил
+class Family {                              // название пишется с Большой буквы
+    var name: String
+    var age: Int
+    
+    init() {                                // инициализация, при создании, если не забиваешь параметры
+        name = "no name"
+        age = 0
+    }
+    
+    init(name: String, age: Int) {          // инициализация, чтобы самому задавать параметры
+        self.name = name                    // self. нужен для того, чтобы работать с name который в конструкторе (чтобы не было путаницы)
+        self.age = age                      // self. нужен для того, чтобы работать с age который в конструкторе (чтобы не было путаницы)
+    }
+}
+
+let wife = Family(name: "Dasha", age: 29)   // let wifi - она вроде бы и константа, но изменить name можно, т.к. в классе (var name)
+wife.name = "Dunia"                         // Dunia
+
+P.S.
+Мы можем менять значения! т.к. в классе var!! 
+А вот в Структуре, не можем! 
+При подобных обстоятельствах!
+
+-----------------                           # разбор памяти Class!
+let newWife = wife                          // объект не копируется!! а создаётся указатель
+newWife.name = "Dunia"                      // ссылка на переменную! поменяешь в одном месте, поменяется во всех!
+
+newWife.name                                // Dunia
+wife.name                                   // Dunia (была Dasha)
+
+-----------------                           # func в Class
+func addOneYear(student: FamilyClass) {     // с переменной student, можно работать сразу
+    student.age += 1
+}
+
+addOneYear(student: wifeClass)
+
+
+************************************        # Пример: func + clouser in class
+class Family {
+    var name: String
+    var lastName: String
+    var birthday: Int
+
+    init() {
+        name = ""
+        lastName = ""
+        birthday = 0
+    }
+    
+    init(name: String, lastName: String, birthday: Int) {
+        self.name = name
+        self.lastName = lastName
+        self.birthday = birthday
+    }
+}
+
+var husbend = Family.init(name: "Sasha", lastName: "Borovitsky", birthday: 1991)
+let wife = Family.init(name: "Dasha", lastName: "Borovitskaya", birthday: 1991)
+let son = Family.init(name: "Lev", lastName: "Borovitsky", birthday: 2016)
+
+let arrFamily = [husbend, wife, son]
+
+func gMeArrFamily(arr: [Family]) {          // func
+    
+    for (index, each) in arr.enumerated() {
+        print("\(index+1). \(each.name) \(each.lastName) \(each.birthday)")
+    }
+}
+
+gMeArrFamily(arr: arrFamily)
+
+let arrFamilySorted = arrFamily.sorted(by: { $0.name < $1.name })   // clouser
+
+gMeArrFamily(arr: arrFamilySorted)
+
+let arrFamilySorted2 = arrFamily.sorted(by: {                       // clouser + switch
+    switch ($0, $1) {
+    case let (a,b) where a.lastName == b.lastName:
+        return a.birthday > b.birthday
+    default:
+        return $0.name < $1.name
+    }
+})
+
+gMeArrFamily(arr: arrFamilySorted2)
+
+
+
+

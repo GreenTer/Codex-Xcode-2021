@@ -1,0 +1,85 @@
+************************************        # цикл switch     (самые простые условия для выполнения, лучше ставить в конце!)
+-----------------                           # часто используемые операции в case
+break                                       - использовать для вывода из цикла, либо когда пустая строка в цикле (case)
+continue                                    - игнорирует условия написанные ниже, пока соблюдены условия (смотреть всамом низу пример)
+fallthrough                                 - для перехода на следующую строку, если условие в case - было выполненно!
+return                                      - прерывает функцию и возвращает что напишем
+
+where                                       - где + условия
+as Int/Srting и т.д.                        - если является Int/Srting и т.д.
+case: 0...21, 25, 27:                       - такой диапазон можно указывать
+
+.hasPrefix("Name_find")                     - проверяем с 1го символа, буквы
+.hasSuffix("Name_find")                     - проверяем с последнего символа, буквы
+
+.uppercased()                               - сделать все символы, БОЛЬШИМИ
+.lowercased()                               - сделать все символы, маленькими
+
+.sorted()                                   - сортирует данные по алфавиту (или пишем условия, на результат Bool)
+.contains("Funk")                           - содержит Funk?
+
+
+************************************        # создание
+switch (var1, var2,var3) {}                 - можно добавить как один параметр, так и много
+case (var1, var2) where var1 == var2 :      - where - задаём переменные с которыми будем работать, и указываем условия
+
+-----------------                           # в условии, можно писать алфавит и цифры!
+case "a"..."z" : return true                - по алфавиту от "a" до "z" включительно
+case "0"..."9" : return false               - от 0 до 9 включительно
+case (4...5, 7...9): break                  - задавать параметры от и до
+
+case (let name,_,_) where name.name.hasPrefix("A") - (пример ниже) let - принимает value переменной, которая входит в switch !!
+case let(a,b) where a < b : true            // добавить свои переменные в case
+
+
+************************************        # пример №1
+switch name {                               // метод для name
+  case 0...5 :                              // условия повтора от 0 до 5 включительно
+    print("something")
+  case "name" where age < 50 :              // условия для name где age < 50
+    print("Worker")
+  case let a as Int :                       // value banding
+    print("Int")
+  case _ as Int :                           // условия для переменной (wilecut) в нашем случае (проверяет все переменные), если она оказалась Int то..
+    print("Int")
+  case let (a,b) where a == b :             // условия для переменных (a,b) в нашем случае, если они оказалась Int то..
+    print("a==b")
+  case (_, let number) where number >= 65 && number <= 70 :
+    print("Hi old man")
+
+  default:                                  // выполняется в случае, если ни одно условие не было выполнено
+    break                                   // использовать для вывода из цикла, либо когда пустая трока в цикле
+}
+
+-----------------                           # пример №2
+let age = 35
+
+switch age {
+case 0...16:
+    print("School")
+case 16...21:
+    print("Colleage")
+case 22...30, 35, 40:                       // такое условие можно писать 
+    print("Hardcore")
+default:
+    break
+}
+
+-----------------                           # пример где - case (let name,_,_) where name.name.hasPrefix("A")
+let tupleStudent = [(name: "Александр", surName: "Боровицкий", fullName: "Евгеньевич"), (name: "Лев", surName: "Боровицкий", fullName: "Александрович"), (name: "Дарья", surName: "Боровицкая", fullName: "Олеговна")]
+
+for each in tupleStudent {    
+
+    switch each {
+    case (let name,_,_) where name.hasPrefix("А"): // вариант 1
+        print("Привет, \(each.name)")
+//    case _ where each.name.hasPrefix("А"):       // вариант 2
+//      print("Привет, \(each.name)")
+    case _ where each.fullName.hasPrefix("А"):
+        print("Привет, \(each.name) \(each.fullName)")
+    case _ where each.fullName.hasPrefix("О"):
+        print("Привет, \(each.name) \(each.fullName) \(each.surName)")
+    default:
+        break
+    }
+}

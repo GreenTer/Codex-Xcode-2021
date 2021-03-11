@@ -1,0 +1,112 @@
+************************************        # Computer Properties
+Computer Properties - не сохраняет значения сами в себя! Они используют другие переменные, для того чтобы сохранять и чтобы потом брать от туда информацию, и обработанную выдавать!
+Computer Properties - есть get & set, но нету обсерверов (willSet/didSet)
+
+-----------------
+get                                         - принимает параметры
+set                                         - выдаёт обработку принятого параметра
+
+willSet                                     - Stored Properties - вызывается прямо перед сохранением значения, при перезаписывании переменной
+didSet                                      - Stored Properties - вызывается сразу после сохранения значения,  при перезаписывании переменной
+
+
+************************************        # примеры
+var fullName: String {                      // если get'er 1, то то (get) можно не писать! см ниже, как и return
+    get {
+        return firstName + " " + lastName
+    }
+}
+
+-----------------
+var fullName: String {
+    firstName + " " + lastName
+}
+
+P.S. return пишется, для того, чтобы знать - что пойдёт в newValue !!
+Т.е. результат return = newValue
+К примеру были бы дополнительные вычисления и как результат мы пишем его в return
+
+-----------------
+import Foundation                           // add addon for object-c (all function with NString)
+
+struct Family {
+    
+    var name: String {
+        willSet {                           // willSet - имеет newValue (это на какое меняем)
+            print(
+                "Буду устанавливать \(newValue)!" +
+                "Только сохраню его с Большой буквы \(newValue.capitalized)"
+            )
+        }
+        didSet {                            // didSet - имеет oldValue (какое было)
+            name = name.capitalized
+            print("Установил \(name), было - \(oldValue)")
+        }
+    }
+    
+    var lastName: String {
+        didSet {                            // при изменении имени, будет Большая заглавная буква
+            lastName = lastName.capitalized
+        }
+    }
+    
+    var fullName: String {
+        get {                               // get - формируем newValue, в нашем случае оно будет name.capitalized + " " + lastName.capitalized
+            name.capitalized + " " + lastName.capitalized           // newValue
+        }
+        
+        set {
+            let newName = newValue.components(separatedBy: " ")     // через components добавили значения в [0], [1] всё что разъеденено пробелом
+            
+            if newName.count > 0 {
+                name = newName[0].capitalized                       // из параметра fullName - заменяем name
+                lastName = newName[1].capitalized                   // из параметра fullName - заменяем lastName
+            }
+        }
+    }
+}
+
+var wife = Family.init(name: "dasha", lastName: "borovitskaya")
+wife.name           // dasha                - с маленькой (в классе при инициализации, можно было бы сделать Большой)
+wife.lastName       // borovitskaya         - с маленькой (в классе при инициализации, можно было бы сделать Большой)
+wife.fullName       // Dasha Borovitskaya   - а здесь уже обработали и сделали чтобы было всё с Большой буквы
+
+wife.name = "darya"
+wife.lastName = "baravitskaya"
+
+wife.name           // Darya                - при изменении, уже будет с Большой буквы
+wife.lastName       // Baravitskaya         - при изменении, уже будет с Большой буквы
+wife.fullName = "dashka boroVitskaya"       - при изменении, уже будет с Большой буквы + name/lastName - будут заменены
+
+wife.name           // Dashka
+wife.lastName       // Borovitskaya
+wife.fullName       // Dashka Borovitskaya
+
+-----------------
+struct Cat {
+    
+    var name: String
+    
+    static let maxAge = 20                                      // переменная, которая статична в классе(структуре) и ее ненадо запонять (должны быть дефолтные значения
+    
+    static var totalCats = 0
+    
+    var age: Int {
+        didSet {
+            if age > Cat.maxAge {
+                age = oldValue
+            }
+        }
+    }
+    
+    init(name: String, age: Int) {
+        self.name = name
+        self.age = age
+        
+        Cat.totalCats += 1
+    }
+}
+
+
+
+

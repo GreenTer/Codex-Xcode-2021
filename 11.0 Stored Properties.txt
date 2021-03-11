@@ -1,0 +1,139 @@
+************************************        # Stored Properties
+Stored Properties - сохраняет данные, непосредственно в самой Properties
+Stored Properties - есть обсерверы (willSet/didSet), но нету get & set
+
+-----------------
+willSet                                     - вызывается прямо перед сохранением значения, при перезаписывании переменной
+didSet                                      - вызывается сразу после сохранения значения,  при перезаписывании переменной
+
+get                                         - Computer Properties - принимает параметры
+set                                         - Computer Properties - выдаёт обработку принятого параметра
+
+lazy var                                    - lazy always! var, переменная, которую не обязательно задействовать (иногда бывают условия когда надо)
+static let maxAge = 20                      - переменная, которая статична в классе(структуре) и ее ненадо запонять (должны быть дефолтные значения
+NameClassOrStructure.nameStatic             - так воспроизводить static переменную
+
+-----------------
+newValue                                    - изначально имеется в (willSet/ didSet/ get/ set)
+oldValue                                    - изначально имеется в (willSet/ didSet/ get/ set)
+
+
+************************************        # Примеры
+import Foundation                           // add addon for object-c (all function with NString)
+
+class Family {
+    
+    var name: String {
+        willSet {                           // willSet - имеет newValue (это на какое меняем)
+            print(
+                "Буду устанавливать \(newValue)!" +
+                "Только сохраню его с Большой буквы \(newValue.capitalized)"
+            )
+        }
+        didSet {                            // didSet - имеет oldValue (какое было)
+            name = name.capitalized
+            print("Установил \(name), было - \(oldValue)")
+        }
+    }
+    
+    var lastName: String {
+        didSet {                            // при изменении имени, будет Большая заглавная буква
+            lastName = lastName.capitalized
+        }
+    }
+    
+    var fullName: String {
+        get {                               // get - формируем newValue, в нашем случае оно будет name.capitalized + " " + lastName.capitalized
+            name.capitalized + " " + lastName.capitalized           // newValue
+        }
+        
+        set {
+            let newName = newValue.components(separatedBy: " ")     // через components добавили значения в [0], [1] всё что разъеденено пробелом
+            
+            if newName.count > 0 {
+                name = newName[0].capitalized                       // из параметра fullName - заменяем name
+                lastName = newName[1].capitalized                   // из параметра fullName - заменяем lastName
+            }
+        }
+    }
+
+    init(name: String, lastName: String) {
+        self.name = name.capitalized
+        self.lastName = lastName.capitalized
+    }
+}
+
+var wife = Family.init(name: "dasha", lastName: "borovitskaya")
+wife.name           // Dasha                - в классе при инициализации сделаk Большой
+wife.lastName       // Borovitskaya         - в классе при инициализации сделаk Большой
+wife.fullName       // Dasha Borovitskaya   - а здесь уже обработали и сделали чтобы было всё с Большой буквы
+
+wife.name = "darya"
+wife.lastName = "baravitskaya"
+
+wife.name           // Darya                - при изменении, уже будет с Большой буквы
+wife.lastName       // Baravitskaya         - при изменении, уже будет с Большой буквы
+wife.fullName = "dashka boroVitskaya"       - при изменении, уже будет с Большой буквы + name/lastName - будут заменены
+
+wife.name           // Dashka
+wife.lastName       // Borovitskaya
+wife.fullName       // Dashka Borovitskaya
+
+-----------------                           # пример
+import Foundation                                                         // подключаем плагин для кода object-c
+struct Student {
+    var firstName : String {
+
+        willSet {                                                         // willSet (что произойдёт после принятия переменной) - String - like firstName : String
+            print("will set " + newValue + " instead of " + firstName)    // newValue даётся изначально! если не присвоил своей переменной
+        }
+        didSet {
+            print("did set " + firstName + " instead of " + oldValue)
+
+            firstName = firstName.capitalized                             // object-c Capitalized first element !
+        }
+    }
+}
+
+var student_1 = Student(firstName: "Sasha")
+student_1.firstName = "ALEX"
+student_1.firstName   // "Alex"
+
+
+
+-----------------                           # пример
+let MaxNameLenght = 15 // global var
+
+class Human {
+    
+    var name: String {
+        didSet {
+            if name.count > MaxNameLenght {
+                name = oldValue
+            }
+        }
+    }
+    
+    lazy var storyOfMyLife = "This is a story of my entire life..." // lazy always var, переменная, которую не обязательно задействовать (иногда бывают условия когда надо)
+    
+//    static let maxAge = 100 // переменная, которая статична в классе(структуре) и ее ненадо запонять (должны быть дефолтные значения)
+    class var maxAge: Int {
+        return 100
+    }
+    
+    var age: Int {
+        didSet {
+            if age > Human.maxAge {
+                age = oldValue
+            }
+        }
+    }
+    
+    
+    init(name: String, age: Int) {
+        self.name = name
+        self.age = age
+    }
+}
+
+

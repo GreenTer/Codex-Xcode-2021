@@ -1,0 +1,36 @@
+************************************        # dictionary (он всегда хранит данные ОПЦИОНАЛЬНЫЕ!! имей ввиду, т.к. значение может быть nil)
+var dictionary = [Int: String]()            - создать Dictionary [key:value]
+dictionary[16] = "sixteen"                  - ключ - значение, записывать
+
+var dict : [Int : String] 	= [0 : "car", 1 : "man"]
+var dict : Dictionary<String : Double> = [a : 2.0]
+var airports: [String: String] = ["YYZ": "Toronto Pearson", "DUB": "Dublin"]
+
+
+************************************        # добавить в dictionary
+dictionary["key_name"] = "value_name"       - добавить в dictionary
+dictionary.updateValue("value_name" : String, forKey: "key_name")   - добавить в dictionary (этим методом он показывает? что мы перезаписали старое значение? или это создалось новое!)
+
+
+************************************        # удалить из dictionary, или замена
+dictionary["key"] = nil                     - удалить пары ключ-значение
+dictionary.removeValue(forKey: "key")       - удалить пары ключ-значение
+dictionary = [:]                            - очистить весь dictionary
+
+
+************************************        # поиск по dictionary, сортировка
+dictionary.keys                             - вывести все ключи
+dictionary.keys.array                       - вывести все ключи array НЕ РАБОТАЕТ (смотреть пример, как я сделал)
+dictionary.values                           - вывести все значения
+dictionary.values.array                     - вывести все значения array
+dictionary.sorted()                         - сортировать по алфавиту(либо условия, какие зададим)/(или пишем условия, на результат Bool)
+
+
+************************************        # примеры
+var myDictionary = ["Hello": "Mister", "Sasha": "Borovitsky"]
+
+myDictionary.keys
+myDictionary.keys.first
+
+let arrayString = [String](myDictionary.keys)
+arrayString[1]

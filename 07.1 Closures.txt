@@ -1,0 +1,133 @@
+************************************        # Closures
+Синтаксис замыкающего выражения может использовать сквозные параметры.
+Значения по умолчанию не могут быть переданы. Вариативные параметры могут быть использованы в любом месте в списке параметров.
+Кортежи также могут быть использованы как типы параметров и как типы возвращаемого значения.
+
+Если Closures находится в конце, то вызывать его можно вызываемаяФункция(добавляемЧтоОбрабатывать) {здесь писать условия}
+
+clouser:(Int?, Int) -> Bool ) -> Int 		# пример создания
+
+На мой взгляд - нужен чисто для своих правил, но они имеюся в функциях свифта, там что не будет - то будет такое же правило выполнять!
+
+var sort = "adfbkhbdjfk:JKFj:J:HFLDHFu27349872965471"
+sort.sorted(by: {$0 < $1}) 					// сортировать от 1...
+sort.sorted(by: < ) 						// тоже самое что и выше!
+
+
+************************************        # встроенные closures
+.sorted                                     - <, >... на сравнения
+.filter                                     - Bool (true, false)
+.map                                        - (tuple) -> что хочешь
+
+-----------------                           # .sorted
+let arr = [12,13,16,23,1414,123,176,858,9]
+
+let nums_1 = arr.sorted(by: {
+    x, y in
+    x < y
+})
+
+-----------------                           # .filter
+let arr = [12,13,16,23,1414,123,176,858,786896,9]
+
+let nums_1 = arr.filter({
+    (num: Int) -> Bool in
+    return num % 2 != 0
+})
+
+-----------------                           # .map
+let arr = [12,13,16,23,1414,123,176,858,786896,9]
+
+let square = arr.map({
+    (num: Int) -> String in
+    return "\(num * num)"
+})
+
+
+************************************        # возможности, если Closures - в одну строку
+return 										- если в вычислении одна строка, то return - можно убрать!
+$0 											- первый аргумент (Называется shortHand) 
+$1 											- второй аргумент
+$2 											- третий аргумент
+
+-----------------                           # как создавать
+{ (параметры) -> тип результата in
+	выражения
+}
+
+-----------------                           # class
+let arrFamilySorted2 = arrFamily.sorted(by: {                       // clouser + switch in class
+    switch ($0, $1) {
+    case let (a,b) where a.lastName == b.lastName:
+        return a.birthday > b.birthday
+    default:
+        return $0.name < $1.name
+    }
+})
+-----------------                           # struc
+let arrSortStudent2 = arrStudents.sorted(by: {                      // clouser in struc
+    if $0.lastName == $1.lastName {
+        return $0.name < $1.name
+    }
+
+    return $0.lastName < $1.lastName
+})
+
+
+************************************        # пример создания №1
+// функция принимающая массив + условие на true/false -> выдаваемый результат записывается в массив
+
+func filterArr(array: [Int], f: (Int) -> Bool) -> [Int] {
+    
+    var filtered = [Int]()
+    
+    for i in array { 						// цикл по массиву
+
+        if f(i) { 							// условие из вне true/false если выполняется, то добавляем в массив
+            filtered.append(i)
+        }
+
+    }
+
+    return filtered
+    
+}
+----------------- 							# пример как рекомендовано оформлять
+filterArr(array: numbers, f: {i in 			// вот здесь уловие на true/false пишем
+
+    return i % 2 == 0 						// если делатся на 2 без остатка, то добавить в массив
+
+})
+-----------------
+filterArr(array: numbers, f: {$0 % 2 == 0}) // самая короткая форма
+filterArr(array: numbers, {$0 % 2 == 0}) 	// самая короткая форма
+
+
+************************************        # полноценные примеры
+let array = [13,123,1,412,1,31,2,3,1,31,4,2,3,123,1,2312,3,12,3,123]
+
+print(array.min(by: {$0 < $1}))
+
+----------------- 							# в программах, есть что написанно ниже
+func sortArray2(array:[Int], clouser:(Int?, Int) -> Bool ) -> Int {
+    var optVar : Int?
+    
+    optVar = optVar ?? array[0]
+    
+    for value in array {
+        if clouser(optVar, value) {
+            optVar = value
+        }
+    }
+    return optVar!
+}
+
+let test2 = sortArray2(array: array) {$0! < $1}
+
+
+
+
+
+
+
+

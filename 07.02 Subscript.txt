@@ -1,0 +1,160 @@
+************************************        # Subscript
+Subscript - точно такой-же Computer Properties!
+Это обращение к нашему экземпляру по индексу.
+Можем применять к class\struc\enum
+
+Всегда нужно указывать возвращаемый элемент! Анологичен Computer Properties
+
+-----------------                           # как вызывать Subscript
+nameStruct[params] 							// вызываем class\struc\enum и в [квадратных скобках], вводим что интересует
+
+
+************************************        # правило создания для ОБРАБОТКИ, при отсутствии set{})
+subscript(index: Int) -> String? { 			// как пример, сделал Optional
+	return									// можно не писать get{}, а сразу возвращать результат!
+}
+
+-----------------                           # пример
+struct Family {
+    
+    var father = "Sasha"
+    var mother = "Dasha"
+    
+
+    subscript (index: Int) -> String? { 	// так как используем для обрабоки, опустили get{}
+        switch index {
+        case 0: return father
+        case 1: return mother
+
+        default: return nil
+        }
+    }
+}
+
+var family = Family()
+
+family[0] 									// Sasha
+family[1] 									// Dasha
+family[2] 									// nil
+
+
+************************************        # правило создания для ОБРАБОТКИ и ИЗМЕНЕНИЯ
+subscript(index: Int) -> String? { 			// как пример, сделал Optional
+    get { 									// что обрабатываем
+        return 								// что возвращаем
+    }
+    set { 									// что будем менять (устанавливать)
+        
+    }
+}
+
+-----------------                           # пример
+struct Family {
+    
+    var father = "Sasha"
+    var mother = "Dasha"
+    
+
+    subscript (index: Int) -> String? {
+        get {
+            switch index {
+            case 0: return father
+            case 1: return mother
+            
+            default: return nil
+            }
+        }
+
+        set {
+            let changePersone = newValue!
+            
+            switch index {
+            case 0: father = changePersone
+            case 1: mother = changePersone
+
+            default: break
+            }
+        }
+    }
+}
+
+var family = Family()
+
+family[0] 									// Sasha
+family[0] = "Aliaksandr" 					// Aliaksandr
+family[0] 									// Aliaksandr
+family[1] 									// Dasha
+family[2] 									// nil
+
+
+************************************        # полноценные примеры
+struct Family {
+    var father  = "Father"
+    var mother  = "Mother"
+    var kids    = ["Kid_1", "Kid_2", "Kid_3"]
+    
+    // count person in family
+    var count : Int {
+        return 2 + kids.count
+    }
+
+    // subscript for find persone by index
+    subscript(index: Int) -> String? {
+        get {
+            switch(index) {
+            case 0: return father
+            case 1: return mother
+            case 2..<(2 + kids.count): return kids[index - 2]
+            default: return nil
+            }
+        }
+        set {
+            let value = newValue ?? ""
+            
+            switch(index) {
+            case 0: return father = value
+            case 1: return mother = value
+            case 2..<(2 + kids.count): return kids[index - 2] = value
+            default: break
+            }
+        }
+    }
+    
+    // subscript for add suffix for persone
+    subscript(index: Int, suffix: String) -> String? {
+        var name = self[index] ?? ""
+        name += " " + suffix
+        
+        return name
+    }
+}
+
+var family = Family()
+
+// family code
+family.father
+family.mother
+family.kids
+family.count
+
+// subscript
+family[0]
+family[1]
+family[2]
+
+// поменяли название папы
+family[0] = "Daddy"
+family.father
+
+// поменяли имя первому рнебенку
+family[2] = "Buddy"
+
+// узнали имя первого ребенка, через массив детей
+family.kids[0]
+
+
+// проверяем сабскрипт с суффиксом
+family[2]
+
+// такое стало возможным, благодаря сабскрипту, который к имени добавляет суффикс
+family[2, "the great"]!

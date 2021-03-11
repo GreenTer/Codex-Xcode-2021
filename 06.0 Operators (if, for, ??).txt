@@ -1,0 +1,169 @@
+************************************        # операторы в циклах
+continue                                    - игнорирует условия написанные ниже, пока соблюдены условия (смотреть всамом низу пример)
+break                                       - использовать для вывода из цикла, либо когда пустая строка в цикле (case)
+
+repeat                                      - повторять
+while                                       - пока не (условие)
+
+repeat {условия что меняем} while {условие выхода}
+
+
+mainLoop: for i in 0...10 {                 - параметр для выхода из цикла, в любом случае
+  if i == 5 {
+  break mainLoop                            - выводит из саомого цикла полностью (смотреть всамом низу пример)
+  }
+}
+
+-----------------                           # P.S.
+Optional binding                            - это когда в блоке (if, for) создаёшь переменную (if var = 5, if let = 5) к примеру и она варьируется, исключительно в блоке
+Value banding                               - это когда в блоке (swith) создаёшь переменную (case var = 5, case let = 5) к примеру и она варьируется, исключительно в блоке
+Value tipe                                  - enum
+
+
+************************************        # сравнения
+(==)                                        - «равенства»
+(!=)                                        - «неравенства»
+(&&) (&& = * означает true = 1, facle = 0)  - и (приоритет выше, чем у или)
+(||) (|| = + означает true = 1, facle = 0)  - или (приоритет ниже, чем у и)
+
+-----------------
+true  = 1
+facle = 0
+true  &&(*) true  = true
+true  &&(*) falce = falce
+falce &&(*) true  = falce
+falce &&(*) falce = falce
+
+-----------------
+true  ||(+) true  = true
+true  ||(+) falce = falce
+falce ||(+) true  = falce
+falce ||(+) falce = falce
+
+-----------------
+(a == b)                                    - равно            
+(a != b)                                    - не равно
+(a > b)                                     - больше
+(a < b)                                     - меньше
+(a >= b)                                    - больше или равно
+(a <= b)                                    - меньше или равно
+
+
+************************************        # операторы
+0...5                                       - от 0 до 5 включительно
+0..<5                                       - от 0 до 4 включительно
+
+for i in 0..<5 {                            - выведет 4 раза print((i))
+  print("\(i)")
+}
+
+typealias AlexNumber = Int                  - создать свой метод (макрос комманд!)
+
+
+************************************        # цикл if
+if условия {}                               - создание
+
+if array.count == 0 {}                      - если размерность массива == 0, то true\falce
+if array.isEmpty {}                         - тоже самое что и выше, только проще
+
+if array_2 = array_1.updateValue.updateValue(forKey:) {}              - возвращает опциональное значение соответствующее типу значения словаря. Например, для словаря, который хранит String значения, метод возвратит String? тип, или " опциональный String". Это опциональное значение содержит старое значение для этого ключа, если оно существовало до обновления, либо nil если значение не существовало
+if array_2 = array_1.updateValue("Dublin Airport", forKey: "DUB") {}  - пример
+
+-----------------
+if let airportName = airports["DUB"] {
+  print("The name of the airport is \(airportName).")
+} else {
+  print("That airport is not in the airports dictionary.")
+}
+
+-----------------                           # ??
+c = (a < b) ? a : b                         - если (a < b) тогде если true - о выведет (а), а если falce то выведет (b)
+c = n ?? x                                  - n true/falce nil? если да, то взять значение x
+
+var number1 = Int(var1) ?? 0
+var str1 = (Int(var1) != nil) ? var1 : "nil"
+
+
+************************************        # цикл FOR
+for name_цикла in name_переменной {}        - задаём имя цикла, для определенной переменной
+for value in money {}                       - создание цикла (значение в хранилище)
+for (index.value) in array.enumerated() {}  - задаём цикл, с index и value
+for i in 0..<name_переменной.count {}       - задаём имя цикла 0-name_переменной, name_переменной.count считает с 1
+
+for genre in favoriteGenres.sorted() {}     - сортирует данные по алфавиту
+
+
+************************************        # while/repeat
+var b = 1
+
+repeat {
+    print(b)
+    b += 1
+} while (b < 10)
+
+for i in 1...10 where i % 2 == 0 {
+    print("Element i is \(i)")
+}
+
+
+************************************        # ПРИМЕРЫ
+for _ in 0...30 {
+
+  for i in 0..<20 {
+
+      if i == 10 {
+          break
+      }
+
+      print(i)
+  }
+}
+
+-----------------                            # mainLoop - параметр для выхода из цикла, в любом случае
+mainLoop: for _ in 0...30 {
+
+  for i in 0..<20 {
+
+  if i == 10 {
+      break mainLoop
+  }
+
+  print(i)
+  }
+}
+
+-----------------
+mainLoop: for _ in 0...30 {                  // lable mainLoop
+
+  if i < 15 {
+    continue                                 //  будет соблюдать условия до i < 15, и будет игнорировать условия - после i > 15
+  }
+
+  for i in 0..<20 {
+
+    if i == 10 {
+      break mainLoop
+    }
+
+    print(i)
+  }
+}
+
+-----------------                            # fallthrough - для перехода на следующую строку, если условие в предыдущем case - было выполненно!
+var age = 16
+var name = "Alex"
+
+switch age {
+case 0...16:
+    print("School"); fallthrough              // выведет и School и Colleage (если убрать School, то выведет чисто Colleage)
+case 17...21:
+    print("Colleage")
+case 22...55:
+    print("Work")
+case 56...60:
+    break
+case 61, 63, 66 :
+    print("Yahooo ")
+default:
+    break
+}

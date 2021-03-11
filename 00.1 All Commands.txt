@@ -1,0 +1,86 @@
+.count                                      - размерность переменной (считает 1+ (а не 0+))
+.isEmpty                                    - true/falce
+
+.max                                        - покажет максимальное значение, например Int8.max
+.min                                        - покажет минимальное значение, например Int8.min
+
+.append("f")                                - добавить в конец массива, добавить ("f")
+.insert("name")                             - добавить в начало массива, добавить ("name")
+.insert("-", at: 3)                         - поставить "-" в порядковый индекс 3 со смещением всех данных вправо
+
+.contains("Funk")                           - содержит Funk?
+
+.removeAll()                                - удалить всё из массива
+.remove(at: 3)                              - удалить значение под индексом 3
+.​removeLast​()                               - удалить последний элемент массива
+
+.sorted()                                   - сортирует данные по алфавиту (или пишем условия, на результат Bool)
+
+.hasPrefix("Name_find")                     - проверяем с 1го символа, буквы
+.hasSuffix("Name_find")                     - проверяем с последнего символа, буквы
+
+.uppercased()                               - сделать все символы, БОЛЬШИМИ
+.lowercased()                               - сделать все символы, маленькими
+
+-----------------                           # enum, class, struc
+.rawValue                                   - вывести значение переменной
+
+
+************************************        # операции с Object-C
+import Foundation                           - подключаем в начале программы плагин (object С)
+(X as NSString).length                      - длинна переменной
+.components(separatedBy: " ")  				- компоненты разделены пробелом (к примеру)
+
+  -----------------                           # пример
+  import Foundation                           - подключаем в начале программы плагин (object С)
+  let loveStr = "\u{1F496} \u{260E}\u{0488}"  - создали константу с символов
+  (loveStr as NSString).length                - длинна константы
+
+
+return name + " " + lastName 							// newValue
+let nFullName = newValue.components(separatedBy: " ")
+nFullName[0] 											// name
+nFullName[1] 											// lastName
+
+
+************************************        # Time (UIKit)
+import UIKit
+// условия, для подсчета времени со дня рождения
+let today   = Calendar.init(identifier: .gregorian)
+let dmy     = today.dateComponents([.day, .month, .year], from: Date())
+
+-----------------                           # математика
+sqrt() 										- извлечь корень
+pow(Double(Params), kvadrat/kyb) 			- возведения числа (которое в скобках), степень возведения 2/3/4 какую хочешь
+pow(Double(4), 2) 							- число 4 (указали что Double/Float/Int) возводим в квадрат = 16
+
+
+let aplphaBet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+
+"A", "E", "I", "O", "U", "Y"
+"a", "e", "i", "o", "u", "y"
+
+"B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Z" 
+"b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "z" 
+
+"1", "2", "3", "4", "5", "6", "7", "8", "9", "0":
+"(", ")", "[", "]", ";", "'", ",", ".":
+
+x % 2 = 0 - чёрное
+
+January = "January", February = "February", March = "March", April = "April", May = "May", June = "June", July = "July", August = "August", September = "September", October = "October", November = "November", December = "December"
+
+January
+February
+March
+April
+May
+June
+July
+August
+September
+October
+November
+December
+
+January, February, March, April, May, June, July, August, September, October, November, December

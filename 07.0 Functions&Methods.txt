@@ -1,0 +1,178 @@
+************************************        # Functions
+-----------------                           # часто используемые операции
+return                                      - в функции используется для параметров, которые хотим вернуть
+return                                      - прерывает функцию и возвращает что напишем
+Int...                                      - означает, что в эту характеристику, можем вписывать свои значения
+inout                                       - служит для того, чтобы из let параметров делать var + менять значение в переданных параметрах (func increase(_ n : inout Int){}) 
+
+nameFunction()                              - вызвать функцию
+func nameFunct () -> () {}                  - функция, возвращает функцию (вложенную в неё)
+
+
+************************************        # правило создания
+func giveMeArr(arr: [Int]) -> String {}                     // функция принимающая массив и возвращающая строку
+func movePoint(point: Point, byX x: Int, byY y: Int) {}     // функция принимающая структуру Point (byX/byY - это внешние переменные, кторые отобразятся при использовании функции)
+movePoint(point: point1, byX: 3, byY: 3)                    // byX/byY - отображаются при вызове
+
+
+-----------------                           # пример создания №1 (Int...)
+func nameFunct (namePeremennoy name_param_1 : (String), name_param_2 : Int...) -> String {}
+
+func nameFunct                              // имя функции
+namePeremennoy                              // имя которое будем видеть при использовании функции (что вводить)
+name_param_1 : (String)                     // имя переменной + что будет внутри (тюпл), [массив], Int, String и т.д.)
+name_param_2 : Int...                       // имя переменной + значения которые сами впишем
+-> String                                   // что вернёт при обработке функции - вернёт строку
+
+-----------------                           # пример создания №2 (Optional)
+func calculateMoney (wallet: [Int], typeBanknot: Int? = nil) -> (total : Int, count : Int) {}
+
+func calculateMoney                         // имя функции calculateMoney
+wallet: [Int]                               // добавить массив под названием (wallet: [Int])
+type: Int? = nil                            // добавить тип купюры, которую будем считать (typeBanknot: Int? = nil) - по умолчанию будет nil
+-> (total : Int, count : Int)               // при обработке функции - вернёт: тюпл (total : Int, count : Int)
+
+calculateMoney(wallet: arr)                 // при вызове, можно опустить typeBanknot - если она нас не интересует (т.к. мы создали её Optional)
+calculateMoney(wallet: arr, typeBanknot: 1) // вариант вызова с банкнотой
+
+-----------------                           # пример создания №3 (Optional)
+func calculateMoney (inRange nominal : [Int], type: Int) -> (total : Double?, count : Int) {}
+func calculateMoney (inRange nominal : [Int], type: Int) -> (total : Double?, count : Int?) {}
+func calculateMoney (inRange nominal : [Int], type: Int) -> (total : Double?, count : Int)? {}
+
+Optional banding можем сделать для любой возвращаемой переменной, либо всего tupl и т.д.!!
+Если вдруг что-то не срослось, чтобы возвращало то, что смогло посчитать
+
+-----------------                           # пример создания №4 (функия возвращает функцию)
+func sayHi() {}                             // функция которая вернёт что в неё вложено
+func sayHi() -> () {}                       // идентична функции выше
+
+Эти записи - идентичны + функцию можно байндить на переменную или константу!!
+
+let hi = sayHi
+let hi2 : () -> () = sayHi                  // эдентична записи выше
+
+-----------------
+func gMe() -> () {
+    print("Hello")
+
+
+    func func2() {
+       print("World")
+    }
+    
+    return func2()
+}
+
+gMe()
+
+
+************************************        # полноценные примеры
+-----------------                           # пример (Int...)
+func sumParametrsYouWhrite (inSequence range: Int...) -> Int {
+    var sum = 0
+    
+    for value in range {
+        sum += value
+    }
+    
+    return sum
+}
+
+sumParametrsYouWhrite(inSequence: 5,15,20,10) // посчитает всё что запросили
+
+-----------------                           # пример (вывода фразы, какую задашь функции)
+func whritePhrase (phrase: String) {
+    print(phrase)
+}
+
+whritePhrase(phrase: "Hello world")
+
+let phrase = whritePhrase
+
+phrase("bbb")
+
+-----------------                           # пример (задавать функцию, дублирование её под другим названием)
+func doSomething(whatToDo: () -> ()) {      // принимает ничего, возвращает другую функцию - которую зададим
+    whatToDo()
+}
+
+doSomething(whatToDo: nameFunc)             // функция, которая может вызвать другую функцию
+
+-----------------                           # пример (функция в функции и её вывод)
+func whatToDo() -> () -> () {               // целых () -> () шт. потому что во встроенной функции нету возврата! rintSomething()
+    
+    func printSomething() {                 // нету возврата, в примере функции ниже, есть возврат
+        print("I can print this")
+    }
+    
+    return printSomething
+}
+
+let iShouldDoThis = whatToDo()              // переменной можно задавать функцию!
+iShouldDoThis()
+
+-----------------
+func giveMeArray() -> () {                  // здесь вызывать функцию, и она же вернёт функцию
+    
+    func printSom() -> () {                 // во встроенной функции, есть возврат функции
+        let ttt = print("Hello")
+    }
+    
+    return printSom()
+}
+
+giveMeArray()
+
+-----------------                           # пример на факториале (функция в функции и её вывод) (4! = 1 * 2 * 3 * 4)
+func factarial(number: Int) -> Int {
+    
+    if number <= 1 {
+        return 1
+    }
+    
+    return number * factarial(number: number - 1)
+}
+
+factarial(number: 4)                        // 24
+
+-----------------                           # inout
+func increase(_ n : inout Int){
+    n += 10
+}
+ 
+var d = 20                                  // был  20
+increase(&d)                                // стал 30
+print(d)                                    //      30
+************************************************************************************************************
+************************************************************************************************************
+
+
+
+
+
+************************************        # методы (mutating func)
+Используются внутри struct, enum
+self - всегда указывает на того товарища, которого вызвали
+Если метод вызвал энум, селф будет указывать на энум
+Если метод вызвал экземпляр класса, то он укажет на экземпляр класса
+
+-----------------
+struct Point {
+    var x : Int
+    var y : Int
+    
+//    mutating func move(byX x: Int, andY y: Int) { // mutating меняет саму property!
+//        self.x += x
+//        self.y += y
+//    }
+
+    mutating func move(byX x: Int, andY y: Int) { // mutating меняет саму property! (only for var)
+        self = Point(x: self.x + x, y: self.y + y)
+    }
+}
+
+var p = Point(x: 1, y: 1)
+p.move(byX: 2, andY: 3)
+p.x
+p.y
